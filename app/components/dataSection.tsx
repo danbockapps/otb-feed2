@@ -7,7 +7,6 @@ export default async function DataSection() {
     <div className="p-4 border rounded">
       <h2 className="font-semibold">Loaded Data</h2>
       <p>{JSON.stringify(data)}</p>
-      <p className="text-sm text-gray-500">timestamp: {data.timestamp}</p>
     </div>
   );
 }

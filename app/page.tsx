@@ -1,19 +1,20 @@
-// app/page.tsx
-import { Suspense } from "react";
-import LoadingIndicator from "./components/loadingIndicator";
-import DataSection from "./components/dataSection";
+"use client";
+
+import { useCallback, useEffect, useReducer } from "react";
+import getPlayer from "./lib/getPlayer";
+import { initialState, reducer } from "./reducer";
 
 export default function Page() {
-  return (
-    <main className="space-y-6 p-8">
-      <h1 className="text-2xl font-bold">Streaming Example</h1>
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-      <Suspense fallback={<LoadingIndicator />}>
-        {/* This Server Component will stream in when ready */}
-        <DataSection />
-      </Suspense>
+  const fetchPlayerData = useCallback(() => {
+    state.playerIds.forEach(async (id) => {
+      const data = await getPlayer(id);
+      console.log(`Player Data for ID ${id}:`, data);
+    });
+  }, [state.playerIds]);
 
-      <p>Other content that renders immediately.</p>
-    </main>
-  );
+  useEffect(fetchPlayerData, [fetchPlayerData]);
+
+  return <main></main>;
 }

@@ -1,4 +1,4 @@
-export type RatingRecord = {
+type RatingRecord = {
   eventId: string;
   sectionNumber: number;
   preRating: number;
@@ -8,7 +8,7 @@ export type RatingRecord = {
   ratingSource: string;
 };
 
-export type EventInfo = {
+type EventInfo = {
   id: string;
   name: string;
   startDate: string; // ISO date string
@@ -16,7 +16,7 @@ export type EventInfo = {
   stateCode: string;
 };
 
-export type SectionItem = {
+type SectionItem = {
   id: string;
   sectionNumber: number;
   sectionName: string;
@@ -34,4 +34,29 @@ export type PlayerSectionsResponse = {
   pageSize: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
+};
+
+export type Player = {
+  id: string;
+  fideId: string;
+  fideCountry: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  lastChangedDate: string; // ISO date string
+  rank: number;
+  stateRep: string;
+  jurisdiction: string;
+  stateRank: number;
+  ratings: Rating[];
+  status: string;
+  expirationDate: string; // ISO date string
+};
+
+type Rating = {
+  rating: number;
+  ratingSystem: string;
+  gamesPlayed: number;
+  isProvisional: boolean;
+  floor: number;
 };

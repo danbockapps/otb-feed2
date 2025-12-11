@@ -1,0 +1,20 @@
+export interface PlayerDTO {
+  firstName: string;
+  lastName: string;
+  events: EventDTO[];
+}
+
+export interface EventDTO {
+  eventId: string;
+  eventName: string;
+  sectionId: string;
+  sectionName: string;
+  sectionNumber: number;
+  ratingRecords: RatingRecordDTO[];
+}
+
+export interface RatingRecordDTO {
+  preRating: number;
+  postRating: number;
+  ratingSource: string;
+}

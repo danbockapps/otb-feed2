@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useReducer } from 'react'
 import getPlayer from './lib/getPlayer'
+import makeEvents from './lib/makeEvents'
 import { initialState, reducer } from './reducer'
+import { IEvent } from './types/types'
 
 export default function Page() {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -17,7 +19,11 @@ export default function Page() {
 
   useEffect(fetchPlayerData, [fetchPlayerData])
 
-  // const events = Object.entries(state.dtos).reduce<IEvent>((acc, dto) => {}, {})
+  const events = Object.entries(state.dtos)
+    .reduce<IEvent[]>(makeEvents, [])
+    .sort((a, b) => (a.info.endDate < b.info.endDate ? 1 : -1))
+
+  console.log('events', events)
 
   return <main></main>
 }

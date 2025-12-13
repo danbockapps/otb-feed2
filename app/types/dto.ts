@@ -7,6 +7,7 @@ export interface PlayerDTO {
 export interface EventDTO {
   eventId: string
   eventName: string
+  endDate: string
   sectionId: string
   sectionName: string
   sectionNumber: number

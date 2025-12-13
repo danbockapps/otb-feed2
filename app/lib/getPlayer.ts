@@ -23,6 +23,7 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
         events: sectionsData.items.map((section) => ({
           eventId: section.event.id,
           eventName: section.event.name,
+          endDate: section.event.endDate,
           sectionId: section.id,
           sectionName: section.sectionName,
           sectionNumber: section.sectionNumber,

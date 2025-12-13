@@ -10,6 +10,15 @@ export const initialState: State = {
   dtos: {},
 }
 
-export const reducer = (state: State): State => {
-  return state
+type Action = { type: 'ADD_PERFORMANCES'; payload: { playerId: string; dto: PlayerDTO } }
+// | { type: 'ADD_PLAYER'; payload: Player }
+// | { type: 'REMOVE_PLAYER'; payload: string }
+
+export const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'ADD_PERFORMANCES':
+      return { ...state, dtos: { ...state.dtos, [action.payload.playerId]: action.payload.dto } }
+    default:
+      return state
+  }
 }

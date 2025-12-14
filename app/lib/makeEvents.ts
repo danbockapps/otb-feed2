@@ -9,9 +9,11 @@ const makeEvents = (acc: IEvent[], cur: [string, PlayerDTO]) => {
     firstName: dto.firstName,
     lastName: dto.lastName,
     eventId: e.eventId,
-    sectionId: e.sectionId,
-    sectionName: e.sectionName,
-    sectionNumber: e.sectionNumber,
+    sectionItem: {
+      id: e.sectionId,
+      sectionName: e.sectionName,
+      sectionNumber: e.sectionNumber,
+    },
     ratingRecords: e.ratingRecords,
   }))
 
@@ -27,12 +29,8 @@ const makeEvents = (acc: IEvent[], cur: [string, PlayerDTO]) => {
       performances: [...e.performances, ...performances.filter((p) => p.eventId === e.info.id)],
     })),
     ...newEvents.map((e) => ({
-      info: {
-        id: e.eventId,
-        name: e.eventName,
-        endDate: e.endDate,
-      },
-      performances: performances.filter((p) => p.sectionId === e.sectionId),
+      info: { id: e.eventId, name: e.eventName, endDate: e.endDate },
+      performances: performances.filter((p) => p.sectionItem.id === e.sectionId),
     })),
   ]
 }

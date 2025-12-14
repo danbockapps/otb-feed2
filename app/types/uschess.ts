@@ -16,7 +16,7 @@ export type EventInfo = {
   stateCode: string
 }
 
-type SectionItem = {
+export type SectionItem = {
   id: string
   sectionNumber: number
   sectionName: string

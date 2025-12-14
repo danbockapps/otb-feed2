@@ -1,3 +1,5 @@
+import { RatingRecord } from './uschess'
+
 export interface PlayerDTO {
   firstName: string
   lastName: string
@@ -14,8 +16,4 @@ export interface EventDTO {
   ratingRecords: RatingRecordDTO[]
 }
 
-export interface RatingRecordDTO {
-  preRating: number
-  postRating: number
-  ratingSource: string
-}
+export type RatingRecordDTO = Pick<RatingRecord, 'preRating' | 'postRating' | 'ratingSource'>

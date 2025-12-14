@@ -1,4 +1,4 @@
-type RatingRecord = {
+export type RatingRecord = {
   eventId: string
   sectionNumber: number
   preRating: number

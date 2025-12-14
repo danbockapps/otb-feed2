@@ -11,6 +11,7 @@ const makeEvents = (acc: IEvent[], cur: [string, PlayerDTO]) => {
     eventId: e.eventId,
     sectionId: e.sectionId,
     sectionName: e.sectionName,
+    sectionNumber: e.sectionNumber,
     ratingRecords: e.ratingRecords,
   }))
 

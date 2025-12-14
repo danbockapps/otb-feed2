@@ -1,13 +1,10 @@
 import { RatingRecordDTO } from './dto'
+import { EventInfo } from './uschess'
 
-export interface EventInfo {
-  endDate: string
-  id: string
-  name: string
-}
+export type PartialEventInfo = Pick<EventInfo, 'id' | 'name' | 'endDate'>
 
 export interface IEvent {
-  info: EventInfo
+  info: PartialEventInfo
   performances: IPerformance[]
 }
 
@@ -18,5 +15,6 @@ export interface IPerformance {
   eventId: string
   sectionId: string
   sectionName: string
+  sectionNumber: number
   ratingRecords: RatingRecordDTO[]
 }

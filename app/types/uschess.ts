@@ -8,7 +8,7 @@ type RatingRecord = {
   ratingSource: string
 }
 
-type EventInfo = {
+export type EventInfo = {
   id: string
   name: string
   startDate: string // ISO date string

@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useReducer } from 'react'
+import EventDisplay from './components/EventDisplay'
 import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
 import { initialState, reducer } from './reducer'
@@ -25,5 +26,11 @@ export default function Page() {
 
   console.log('events', events)
 
-  return <main></main>
+  return (
+    <main>
+      {events.map((e) => (
+        <EventDisplay key={e.info.id} event={e.info} sections={e.performances} />
+      ))}
+    </main>
+  )
 }

@@ -1,17 +1,21 @@
-import { IPerformance, PartialEventInfo } from '../types/types'
+import { IPerformance, PartialEventInfo, PerformanceSection } from '../types/types'
 
 interface EventDisplayProps {
   event: PartialEventInfo
-  sections: IPerformance[]
+  performances: IPerformance[]
 }
 
-export default function EventDisplay({ event, sections }: EventDisplayProps) {
+export default function EventDisplay({ event, performances }: EventDisplayProps) {
   // Calculate total players
-  const totalPlayers = sections.reduce((sum, section) => sum + section.ratingRecords.length, 0)
+  const totalPlayers = performances.reduce((sum, section) => sum + section.ratingRecords.length, 0)
 
   // Sort sections by sectionNumber ascending
-  const sortedSections = [...sections].sort(
-    (a, b) => a.sectionItem.sectionNumber - b.sectionItem.sectionNumber,
+  const sections = performances.reduce<PerformanceSection[]>(
+    (acc, cur) =>
+      acc.some((item) => item.sectionNumber === cur.sectionItem.sectionNumber)
+        ? acc
+        : [...acc, cur.sectionItem],
+    [],
   )
 
   return (
@@ -27,43 +31,55 @@ export default function EventDisplay({ event, sections }: EventDisplayProps) {
         </div>
 
         {/* Sections */}
-        {sortedSections.length === 0 ? (
+        {sections.length === 0 ? (
           <div className="alert alert-info">
             <span>No sections available for this event.</span>
           </div>
         ) : (
           <div className="space-y-6">
-            {sortedSections.map((section) => (
-              <div key={section.sectionItem.id} className="border rounded-lg p-4">
-                <h3 className="font-semibold text-lg mb-3">
-                  Section {section.sectionItem.sectionNumber}: {section.sectionItem.sectionName}
-                </h3>
-                {section.ratingRecords.length === 0 ? (
-                  <p className="text-gray-500">No players in this section.</p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="table table-sm">
-                      <thead>
-                        <tr className="bg-base-200">
-                          <th>Pre-Rating</th>
-                          <th>Post-Rating</th>
-                          <th>Source</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {section.ratingRecords.map((record, idx) => (
-                          <tr key={idx}>
-                            <td>{record.preRating}</td>
-                            <td>{record.postRating}</td>
-                            <td>{record.ratingSource}</td>
+            {sections.map((section, i) => {
+              const players = performances.filter(
+                (perf) => perf.sectionItem.sectionNumber === section.sectionNumber,
+              )
+
+              return (
+                <div key={i} className="border rounded-lg p-4">
+                  <h3 className="font-semibold text-lg mb-3">
+                    Section {section.sectionNumber}: {section.sectionName}
+                  </h3>
+                  {players.length === 0 ? (
+                    <p className="text-gray-500">No players in this section.</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="table table-sm">
+                        <thead>
+                          <tr className="bg-base-200">
+                            <th>Name</th>
+                            <th>Rating change</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            ))}
+                        </thead>
+                        <tbody>
+                          {players.map((player, idx) => (
+                            <tr key={idx}>
+                              <td>
+                                {player.firstName} {player.lastName}
+                              </td>
+                              <td>
+                                {player.ratingRecords.map((record, j) => (
+                                  <div key={j}>
+                                    {record.preRating} ➡ {record.postRating} ({record.ratingSource})
+                                  </div>
+                                ))}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         )}
       </div>

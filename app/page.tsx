@@ -24,12 +24,10 @@ export default function Page() {
     .reduce<IEvent[]>(makeEvents, [])
     .sort((a, b) => (a.info.endDate < b.info.endDate ? 1 : -1))
 
-  console.log('events', events)
-
   return (
     <main>
       {events.map((e) => (
-        <EventDisplay key={e.info.id} event={e.info} sections={e.performances} />
+        <EventDisplay key={e.info.id} event={e.info} performances={e.performances} />
       ))}
     </main>
   )

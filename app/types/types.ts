@@ -8,11 +8,13 @@ export interface IEvent {
   performances: IPerformance[]
 }
 
+export type PerformanceSection = Pick<SectionItem, 'id' | 'sectionNumber' | 'sectionName'>
+
 export interface IPerformance {
   playerId: string
   firstName: string
   lastName: string
   eventId: string
-  sectionItem: Pick<SectionItem, 'id' | 'sectionNumber' | 'sectionName'>
+  sectionItem: PerformanceSection
   ratingRecords: RatingRecordDTO[]
 }

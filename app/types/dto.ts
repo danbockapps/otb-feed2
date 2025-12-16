@@ -6,7 +6,7 @@ export interface PlayerDTO {
   events: EventDTO[]
 }
 
-export interface EventDTO {
+interface EventDTO {
   eventId: string
   eventName: string
   endDate: string

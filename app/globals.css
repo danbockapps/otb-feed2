@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 @plugin 'daisyui';
+
+a {
+  text-decoration: underline;
+}

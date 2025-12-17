@@ -6,12 +6,16 @@ import { Player, PlayerSectionsResponse } from '../types/uschess'
 
 export default async function getPlayer(id: string): Promise<PlayerDTO> {
   try {
+    console.time(`Fetching player ${id}`)
+
     const result = await Promise.allSettled([
       axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
       axios.get<PlayerSectionsResponse>(
         `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=5`,
       ),
     ])
+
+    console.timeEnd(`Fetching player ${id}`)
 
     if (result[0].status === 'fulfilled' && result[1].status === 'fulfilled') {
       const playerData = result[0].value.data

@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useReducer } from 'react'
 import EventDisplay from './components/EventDisplay'
+import PlayerList from './components/PlayerList'
+import defaultPlayerIds from './lib/defaultPlayerIds'
 import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
 import { initialState, reducer } from './reducer'
@@ -9,14 +11,31 @@ import { IEvent } from './types/types'
 
 export default function Page() {
   const [state, dispatch] = useReducer(reducer, initialState)
-  console.log(state)
+  console.log({ state })
 
   const fetchPlayerData = useCallback(() => {
-    state.playerIds.forEach(async (id) => {
-      const data = await getPlayer(id)
-      dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId: id, dto: data } })
+    let storedPlayerIds = localStorage.getItem('playerIds')
+
+    if (storedPlayerIds === null) {
+      // Initial page load. Set default players.
+      localStorage.setItem('playerIds', defaultPlayerIds)
+      storedPlayerIds = defaultPlayerIds
+    }
+
+    // Probably relevant in dev only
+    dispatch({ type: 'RESET' })
+
+    storedPlayerIds.split(',').forEach(async (id) => {
+      const dto = await getPlayer(id)
+
+      dispatch({
+        type: 'ADD_PLAYER',
+        payload: { id, firstName: dto.firstName, lastName: dto.lastName },
+      })
+
+      dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId: id, dto } })
     })
-  }, [state.playerIds])
+  }, [])
 
   useEffect(fetchPlayerData, [fetchPlayerData])
 
@@ -26,6 +45,10 @@ export default function Page() {
 
   return (
     <main>
+      <PlayerList
+        players={state.players}
+        onRemovePlayer={(id) => dispatch({ type: 'REMOVE_PLAYER', payload: id })}
+      />
       {events.map((e) => (
         <EventDisplay key={e.info.id} event={e.info} performances={e.performances} />
       ))}

@@ -44,14 +44,16 @@ export default function Page() {
     .sort((a, b) => (a.info.endDate < b.info.endDate ? 1 : -1))
 
   return (
-    <main>
+    <main className="bg-base-200">
       <PlayerList
         players={state.players}
         onRemovePlayer={(id) => dispatch({ type: 'REMOVE_PLAYER', payload: id })}
       />
-      {events.map((e) => (
-        <EventDisplay key={e.info.id} event={e.info} performances={e.performances} />
-      ))}
+      <div className="space-y-8">
+        {events.map((e) => (
+          <EventDisplay key={e.info.id} event={e.info} performances={e.performances} />
+        ))}
+      </div>
     </main>
   )
 }

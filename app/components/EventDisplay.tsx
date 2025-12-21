@@ -15,7 +15,7 @@ export default function EventDisplay({ event, performances }: EventDisplayProps)
   )
 
   return (
-    <div className="card bg-base-100 shadow-lg mx-4">
+    <div className="card bg-base-100 shadow-lg">
       <div className="card-title m-4 inline">
         {performances.length} players played in{' '}
         <a href={`https://ratings.uschess.org/event/${event.id}`} target="_blank">

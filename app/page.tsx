@@ -44,7 +44,7 @@ export default function Page() {
     .sort((a, b) => (a.info.endDate < b.info.endDate ? 1 : -1))
 
   return (
-    <main className="bg-base-200">
+    <main className="p-6">
       <PlayerList
         players={state.players}
         onRemovePlayer={(id) => dispatch({ type: 'REMOVE_PLAYER', payload: id })}

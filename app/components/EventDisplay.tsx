@@ -1,4 +1,5 @@
 import { IPerformance, PartialEventInfo, PerformanceSection } from '../types/types'
+import RightArrow from './RightArrow'
 
 interface EventDisplayProps {
   event: PartialEventInfo
@@ -54,18 +55,7 @@ export default function EventDisplay({ event, performances }: EventDisplayProps)
                               {player.ratingRecords.map((record, j) => (
                                 <div key={j} className="flex gap-2 items-center">
                                   <div>{record.preRating}</div>
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-4 h-4 text-base-content inline"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  >
-                                    <path d="M5 12h14m-6-4l6 4-6 4z" />
-                                  </svg>
+                                  <RightArrow />
                                   <div>{record.postRating}</div>
                                   <div>
                                     {record.ratingSource === 'R' ? '' : record.ratingSource}

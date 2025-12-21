@@ -22,8 +22,8 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
       const sectionsData = result[1].value.data
 
       return {
-        firstName: playerData.firstName,
-        lastName: playerData.lastName,
+        firstName: nameCase(playerData.firstName),
+        lastName: nameCase(playerData.lastName),
         events: sectionsData.items.map((section) => ({
           eventId: section.event.id,
           eventName: section.event.name,
@@ -46,6 +46,9 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
     throw error
   }
 }
+
+const nameCase = (name: string) => name.split(' ').map(oneNameCase).join(' ')
+const oneNameCase = (name: string) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
 
 // https://ratings-api.uschess.org/api/v1/members/12663913/sections?Offset=0&Size=5
 // https://ratings-api.uschess.org/api/v1/members/12663913

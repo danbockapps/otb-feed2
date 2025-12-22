@@ -1,19 +1,25 @@
 'use server'
 
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { PlayerDTO } from '../types/dto'
 import { Player, PlayerSectionsResponse } from '../types/uschess'
+import memberData from './sampleData/member.json'
+import sectionsData from './sampleData/sections.json'
 
 export default async function getPlayer(id: string): Promise<PlayerDTO> {
   try {
     console.time(`Fetching player ${id}`)
 
-    const result = await Promise.allSettled([
-      axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
-      axios.get<PlayerSectionsResponse>(
-        `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=5`,
-      ),
-    ])
+    const result = (
+      process.env.USE_DEV_DATA === 'true'
+        ? [memberData as Player, sectionsData as PlayerSectionsResponse].map(makeAxiosResponse)
+        : await Promise.allSettled([
+            axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
+            axios.get<PlayerSectionsResponse>(
+              `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=5`,
+            ),
+          ])
+    ) as Result
 
     console.timeEnd(`Fetching player ${id}`)
 
@@ -46,6 +52,14 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
     throw error
   }
 }
+
+type Result = [
+  PromiseSettledResult<AxiosResponse<Player>>,
+  PromiseSettledResult<AxiosResponse<PlayerSectionsResponse>>,
+]
+
+const makeAxiosResponse = <T>(obj: T): PromiseSettledResult<{ data: T }> =>
+  ({ status: 'fulfilled', value: { data: obj } }) as const
 
 const nameCase = (name: string) => name.split(' ').map(oneNameCase).join(' ')
 const oneNameCase = (name: string) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()

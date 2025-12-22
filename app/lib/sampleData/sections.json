@@ -1,0 +1,143 @@
+{
+  "items": [
+    {
+      "id": "01KCQQD6TZ4WYB0JPXV0BSVMGE",
+      "sectionNumber": 1,
+      "sectionName": "December 2025",
+      "startDate": "2025-12-03",
+      "endDate": "2025-12-17",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KCQQD6SEK99XBX10HFMCG98K",
+          "sectionNumber": 1,
+          "preRating": 1944,
+          "preRatingDecimal": 1943.75,
+          "postRating": 1947,
+          "postRatingDecimal": 1947.07,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202512170143",
+        "name": "Triangle Chess Adults Marathon",
+        "startDate": "2025-12-03",
+        "endDate": "2025-12-17",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KB1SBRXBZMVHKJPPXDTNWYMZ",
+      "sectionNumber": 1,
+      "sectionName": "November ALL",
+      "startDate": "2025-11-05",
+      "endDate": "2025-11-26",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KB1SBRX4X8BSPGFFK1Z112RS",
+          "sectionNumber": 1,
+          "preRating": 1928,
+          "preRatingDecimal": 1927.84,
+          "postRating": 1944,
+          "postRatingDecimal": 1943.75,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202511260043",
+        "name": "Triangle Chess Adults Marathon",
+        "startDate": "2025-11-05",
+        "endDate": "2025-11-26",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01KA7GSV2BJ4QA5997XJRMAMZ5",
+      "sectionNumber": 1,
+      "sectionName": "Grand Prix Open",
+      "startDate": "2025-11-16",
+      "endDate": "2025-11-16",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01KA7GSTZBNKR7ZJSJFGK4EENN",
+          "sectionNumber": 1,
+          "preRating": 1910,
+          "preRatingDecimal": 1910.16,
+          "postRating": 1928,
+          "postRatingDecimal": 1927.84,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202511160203",
+        "name": "Dragon Knight Chess International Day for Tolerance Grand Prix",
+        "startDate": "2025-11-16",
+        "endDate": "2025-11-16",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K9P24MJYQZNJAFDNR96E521M",
+      "sectionNumber": 1,
+      "sectionName": "Grand Prix Open",
+      "startDate": "2025-11-09",
+      "endDate": "2025-11-09",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K9P24MGCZ1C6NRWDX73VTGWF",
+          "sectionNumber": 1,
+          "preRating": 1920,
+          "preRatingDecimal": 1920.3,
+          "postRating": 1910,
+          "postRatingDecimal": 1910.16,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202511090493",
+        "name": "Dragon Knight Chess International Tongue Twister Day Grand Prix",
+        "startDate": "2025-11-09",
+        "endDate": "2025-11-09",
+        "stateCode": "NC"
+      }
+    },
+    {
+      "id": "01K93DX3PEH9DMB12P8CWN6R0G",
+      "sectionNumber": 1,
+      "sectionName": "October Adults 18plus",
+      "startDate": "2025-10-01",
+      "endDate": "2025-10-29",
+      "format": "Swiss",
+      "ratingSystem": "R",
+      "ratingRecords": [
+        {
+          "eventId": "01K93DX3NZEXCGDHB9YHJ9ETSF",
+          "sectionNumber": 1,
+          "preRating": 1944,
+          "preRatingDecimal": 1943.86,
+          "postRating": 1920,
+          "postRatingDecimal": 1920.3,
+          "ratingSource": "R"
+        }
+      ],
+      "event": {
+        "id": "202510290533",
+        "name": "Triangle Chess Adults only",
+        "startDate": "2025-10-01",
+        "endDate": "2025-10-29",
+        "stateCode": "NC"
+      }
+    }
+  ],
+  "offset": 0,
+  "pageSize": 5,
+  "hasPreviousPage": false,
+  "hasNextPage": true
+}

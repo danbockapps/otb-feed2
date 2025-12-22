@@ -1,0 +1,53 @@
+{
+  "fideId": "39915433",
+  "gender": "Male",
+  "lastChangedDate": "2025-10-01",
+  "rank": 3144,
+  "stateRank": 97,
+  "ratings": [
+    {
+      "rating": 1928,
+      "ratingSystem": "R",
+      "gamesPlayed": 366,
+      "isProvisional": false,
+      "floor": 1700
+    },
+    {
+      "rating": 1763,
+      "ratingSystem": "Q",
+      "gamesPlayed": 150,
+      "isProvisional": false,
+      "floor": 1500
+    },
+    {
+      "rating": 1613,
+      "ratingSystem": "B",
+      "gamesPlayed": 149,
+      "isProvisional": false,
+      "floor": 1400
+    },
+    {
+      "ratingSystem": "OR",
+      "gamesPlayed": 0,
+      "isProvisional": true
+    },
+    {
+      "ratingSystem": "OQ",
+      "gamesPlayed": 0,
+      "isProvisional": true
+    },
+    {
+      "ratingSystem": "OB",
+      "gamesPlayed": 0,
+      "isProvisional": true
+    }
+  ],
+  "id": "12663913",
+  "firstName": "Dan",
+  "lastName": "Bock",
+  "stateRep": "NC",
+  "jurisdiction": "NC",
+  "expirationDate": "2027-09-30",
+  "fideCountry": "USA",
+  "status": "Active"
+}

@@ -1,6 +1,11 @@
 import defaultPlayerIds from './defaultPlayerIds'
 
-const getStoredIds = () => localStorage.getItem('playerIds')?.split(',') ?? []
+export const getRawStoredIds = () => localStorage.getItem('playerIds')
+
+const getStoredIds = () =>
+  getRawStoredIds()
+    ?.split(',')
+    .filter((id) => id) ?? []
 
 export const getIds = () => {
   const storedIds = getStoredIds()

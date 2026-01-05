@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import defaultPlayerIds from '../lib/defaultPlayerIds'
 import { Player } from '../reducer'
 
 interface Props {
@@ -24,7 +25,12 @@ const PlayerList: FC<Props> = ({ players, onRemovePlayer }) => (
         </div>
       ))}
     </div>
-    <p className="text-sm text-base-content/70 mt-2">Player list is stored in your browser.</p>
+
+    <p className="text-sm text-base-content/70 mt-2">
+      {players.map((p) => p.id).join(',') === defaultPlayerIds
+        ? 'Showing default players. Add some people you know!'
+        : 'Player list is stored in your browser.'}
+    </p>
   </>
 )
 

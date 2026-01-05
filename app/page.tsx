@@ -7,7 +7,7 @@ import PlayerList from './components/PlayerList'
 import Toast from './components/Toast'
 import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
-import { getIds, removeId } from './lib/manageLocalStorage'
+import { getIds, getRawStoredIds, removeId } from './lib/manageLocalStorage'
 import { initialState, reducer } from './reducer'
 import { IEvent } from './types/types'
 
@@ -17,7 +17,11 @@ export default function Page() {
     show: false,
     message: '',
   })
-  console.log({ state })
+
+  if (typeof window !== 'undefined') {
+    console.log({ state })
+    console.log({ storedIds: getRawStoredIds() })
+  }
 
   const addPlayer = useCallback(async (playerId: string) => {
     const result = await getPlayer(playerId)

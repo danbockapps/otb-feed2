@@ -4,9 +4,9 @@ import { useCallback, useEffect, useReducer } from 'react'
 import AddPlayerDialog from './components/AddPlayerDialog'
 import EventDisplay from './components/EventDisplay'
 import PlayerList from './components/PlayerList'
-import defaultPlayerIds from './lib/defaultPlayerIds'
 import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
+import { getIds } from './lib/manageLocalStorage'
 import { initialState, reducer } from './reducer'
 import { IEvent } from './types/types'
 
@@ -26,18 +26,10 @@ export default function Page() {
   }, [])
 
   const fetchPlayerData = useCallback(() => {
-    let storedPlayerIds = localStorage.getItem('playerIds')
-
-    if (storedPlayerIds === null) {
-      // Initial page load. Set default players.
-      localStorage.setItem('playerIds', defaultPlayerIds)
-      storedPlayerIds = defaultPlayerIds
-    }
-
     // Probably relevant in dev only
     dispatch({ type: 'RESET' })
 
-    storedPlayerIds.split(',').forEach(addPlayer)
+    getIds().forEach(addPlayer)
   }, [addPlayer])
 
   useEffect(fetchPlayerData, [fetchPlayerData])

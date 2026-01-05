@@ -26,6 +26,7 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
     if (result[0].status === 'fulfilled' && result[1].status === 'fulfilled') {
       const playerData = result[0].value.data
       const sectionsData = result[1].value.data
+      console.log(`Player ${playerData.firstName} ${playerData.lastName} fetched successfully.`)
 
       return {
         firstName: nameCase(playerData.firstName),

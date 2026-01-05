@@ -6,9 +6,22 @@ import { Player, PlayerSectionsResponse } from '../types/uschess'
 import memberData from './sampleData/member.json'
 import sectionsData from './sampleData/sections.json'
 
+function logWithTimestamp(message: string) {
+  const now = new Date()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  const year = now.getFullYear()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+  const milliseconds = String(now.getMilliseconds()).padStart(3, '0')
+  const timestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`
+  console.log(`${timestamp} ${message}`)
+}
+
 export default async function getPlayer(id: string): Promise<PlayerDTO> {
   try {
-    console.time(`Fetching player ${id}`)
+    logWithTimestamp(`Fetching player ${id}...`)
 
     const result = (
       process.env.USE_DEV_DATA === 'true'
@@ -21,12 +34,13 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
           ])
     ) as Result
 
-    console.timeEnd(`Fetching player ${id}`)
-
     if (result[0].status === 'fulfilled' && result[1].status === 'fulfilled') {
       const playerData = result[0].value.data
       const sectionsData = result[1].value.data
-      console.log(`Player ${playerData.firstName} ${playerData.lastName} fetched successfully.`)
+
+      logWithTimestamp(
+        `Player ${playerData.firstName} ${playerData.lastName} fetched successfully.`,
+      )
 
       return {
         firstName: nameCase(playerData.firstName),
@@ -49,7 +63,7 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
       throw new Error('Failed to fetch player data')
     }
   } catch (error) {
-    console.error('Error fetching player data:', error)
+    logWithTimestamp(`Error fetching player data: ${error}`)
     throw error
   }
 }

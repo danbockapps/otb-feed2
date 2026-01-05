@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OTB Feed 2
+
+A modern web application for tracking chess tournament performances and rating changes using the US Chess Ratings API.
+
+## Features
+
+- **Player Management**: Add and remove chess players by their US Chess ID
+- **Tournament Tracking**: View recent tournament performances with detailed results
+- **Rating Changes**: See rating gains/losses with visual indicators
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Development Mode**: Use local JSON data for offline development and testing
+- **Error Handling**: User-friendly error messages for invalid player IDs or API failures
+
+## Tech Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Frontend**: React 19 with TypeScript
+- **Styling**: Tailwind CSS 4 + DaisyUI components
+- **API**: Axios for HTTP requests to US Chess API
+- **State Management**: React useReducer for complex state
+- **Data Persistence**: Browser localStorage for player lists
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- Yarn package manager
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/danbockapps/otb-feed2.git
+cd otb-feed2
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Start the development server:
 
-## Learn More
+```bash
+yarn dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Development Mode
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To use local JSON data instead of the live API (useful for development):
 
-## Deploy on Vercel
+1. Create a `.env.local` file in the root directory
+2. Add: `USE_DEV_DATA=true`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This will load sample data from `app/lib/sampleData/` instead of making API calls.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+app/
+├── api/ratings/          # Server-side API proxy (for CORS)
+├── components/           # React components
+│   ├── AddPlayerDialog.tsx
+│   ├── EventDisplay.tsx
+│   ├── PlayerList.tsx
+│   └── Toast.tsx
+├── lib/
+│   ├── getPlayer.ts      # Main data fetching logic
+│   ├── manageLocalStorage.ts
+│   └── sampleData/       # Local JSON data for dev mode
+├── types/                # TypeScript type definitions
+└── page.tsx              # Main application page
+```
+
+## API Usage
+
+The app fetches data from the US Chess Ratings API:
+
+- Player information: `https://ratings-api.uschess.org/api/v1/members/{id}`
+- Tournament sections: `https://ratings-api.uschess.org/api/v1/members/{id}/sections`
+
+A server-side proxy route handles CORS issues for the API calls.
+
+## Building for Production
+
+```bash
+yarn build
+yarn start
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests: `yarn lint`
+5. Submit a pull request
+
+## License
+
+This project is private and proprietary.

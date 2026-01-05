@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react'
+import { addId } from '../lib/manageLocalStorage'
 import DaisyDialog from './DaisyDialog'
 
 interface Props {
@@ -24,6 +25,7 @@ const AddPlayerDialog: FC<Props> = (props) => {
 
   const addPlayer = (playerId: string) => {
     props.addPlayer(playerId)
+    addId(playerId)
     reset()
   }
 

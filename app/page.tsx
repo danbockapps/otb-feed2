@@ -6,7 +6,7 @@ import EventDisplay from './components/EventDisplay'
 import PlayerList from './components/PlayerList'
 import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
-import { getIds } from './lib/manageLocalStorage'
+import { getIds, removeId } from './lib/manageLocalStorage'
 import { initialState, reducer } from './reducer'
 import { IEvent } from './types/types'
 
@@ -42,7 +42,10 @@ export default function Page() {
     <main className="p-6 flex flex-col items-center">
       <PlayerList
         players={state.players}
-        onRemovePlayer={(id) => dispatch({ type: 'REMOVE_PLAYER', payload: id })}
+        onRemovePlayer={(id) => {
+          dispatch({ type: 'REMOVE_PLAYER', payload: id })
+          removeId(id)
+        }}
       />
       <div className="my-8">
         <AddPlayerDialog {...{ addPlayer }} />

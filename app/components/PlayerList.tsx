@@ -7,22 +7,25 @@ interface Props {
 }
 
 const PlayerList: FC<Props> = ({ players, onRemovePlayer }) => (
-  <div className="flex flex-wrap gap-2 overflow-y-auto content-baseline h-20">
-    {players.map((player, i) => (
-      <div key={i} className="badge gap-2 shadow-sm">
-        <a href={`https://ratings.uschess.org/player/${player.id}`} target="_blank">
-          {player.firstName} {player.lastName}
-        </a>
-        <button
-          onClick={() => onRemovePlayer(player.id)}
-          className="btn btn-circle btn-xs btn-ghost"
-          aria-label={`Remove ${player.firstName} ${player.lastName}`}
-        >
-          ✕
-        </button>
-      </div>
-    ))}
-  </div>
+  <>
+    <div className="flex flex-wrap gap-2 overflow-y-auto content-baseline h-20">
+      {players.map((player, i) => (
+        <div key={i} className="badge gap-2 shadow-sm">
+          <a href={`https://ratings.uschess.org/player/${player.id}`} target="_blank">
+            {player.firstName} {player.lastName}
+          </a>
+          <button
+            onClick={() => onRemovePlayer(player.id)}
+            className="btn btn-circle btn-xs btn-ghost"
+            aria-label={`Remove ${player.firstName} ${player.lastName}`}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+    <p className="text-sm text-base-content/70 mt-2">Player list is stored in your browser.</p>
+  </>
 )
 
 export default PlayerList

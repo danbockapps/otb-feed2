@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useReducer } from 'react'
+import { useCallback, useEffect, useReducer, useState } from 'react'
 import AddPlayerDialog from './components/AddPlayerDialog'
 import EventDisplay from './components/EventDisplay'
 import PlayerList from './components/PlayerList'
+import Toast from './components/Toast'
 import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
 import { getIds, removeId } from './lib/manageLocalStorage'
@@ -12,17 +13,29 @@ import { IEvent } from './types/types'
 
 export default function Page() {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const [toast, setToast] = useState<{ show: boolean; message: string }>({
+    show: false,
+    message: '',
+  })
   console.log({ state })
 
   const addPlayer = useCallback(async (playerId: string) => {
-    const dto = await getPlayer(playerId)
+    const result = await getPlayer(playerId)
 
-    dispatch({
-      type: 'ADD_PLAYER',
-      payload: { id: playerId, firstName: dto.firstName, lastName: dto.lastName },
-    })
+    if (result.success) {
+      dispatch({
+        type: 'ADD_PLAYER',
+        payload: { id: playerId, firstName: result.data.firstName, lastName: result.data.lastName },
+      })
 
-    dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId, dto } })
+      dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId, dto: result.data } })
+    } else {
+      console.error(
+        `Failed to add player ${playerId}: ${result.error.status} - ${result.error.message}`,
+      )
+      setToast({ show: true, message: result.error.message })
+      removeId(playerId)
+    }
   }, [])
 
   const fetchPlayerData = useCallback(() => {
@@ -47,14 +60,20 @@ export default function Page() {
           removeId(id)
         }}
       />
+
       <div className="my-8">
         <AddPlayerDialog {...{ addPlayer }} />
       </div>
+
       <div className="space-y-8">
         {events.map((e) => (
           <EventDisplay key={e.info.id} event={e.info} performances={e.performances} />
         ))}
       </div>
+
+      {toast.show && (
+        <Toast message={toast.message} close={() => setToast({ show: false, message: '' })} />
+      )}
     </main>
   )
 }

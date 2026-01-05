@@ -6,6 +6,10 @@ import { Player, PlayerSectionsResponse } from '../types/uschess'
 import memberData from './sampleData/member.json'
 import sectionsData from './sampleData/sections.json'
 
+type PlayerResult =
+  | { success: true; data: PlayerDTO }
+  | { success: false; error: { status: number; message: string } }
+
 function logWithTimestamp(message: string) {
   const now = new Date()
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -19,30 +23,29 @@ function logWithTimestamp(message: string) {
   console.log(`${timestamp} ${message}`)
 }
 
-export default async function getPlayer(id: string): Promise<PlayerDTO> {
-  try {
-    logWithTimestamp(`Fetching player ${id}...`)
+export default async function getPlayer(id: string): Promise<PlayerResult> {
+  logWithTimestamp(`Fetching player ${id}...`)
 
-    const result = (
-      process.env.USE_DEV_DATA === 'true'
-        ? [memberData as Player, sectionsData as PlayerSectionsResponse].map(makeAxiosResponse)
-        : await Promise.allSettled([
-            axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
-            axios.get<PlayerSectionsResponse>(
-              `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=5`,
-            ),
-          ])
-    ) as Result
+  const result = (
+    process.env.USE_DEV_DATA === 'true'
+      ? [memberData as Player, sectionsData as PlayerSectionsResponse].map(makeAxiosResponse)
+      : await Promise.allSettled([
+          axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
+          axios.get<PlayerSectionsResponse>(
+            `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=5`,
+          ),
+        ])
+  ) as Result
 
-    if (result[0].status === 'fulfilled' && result[1].status === 'fulfilled') {
-      const playerData = result[0].value.data
-      const sectionsData = result[1].value.data
+  if (result[0].status === 'fulfilled' && result[1].status === 'fulfilled') {
+    const playerData = result[0].value.data
+    const sectionsData = result[1].value.data
 
-      logWithTimestamp(
-        `Player ${playerData.firstName} ${playerData.lastName} fetched successfully.`,
-      )
+    logWithTimestamp(`Player ${playerData.firstName} ${playerData.lastName} fetched successfully.`)
 
-      return {
+    return {
+      success: true,
+      data: {
         firstName: nameCase(playerData.firstName),
         lastName: nameCase(playerData.lastName),
         events: sectionsData.items.map((section) => ({
@@ -58,13 +61,27 @@ export default async function getPlayer(id: string): Promise<PlayerDTO> {
             ratingSource: record.ratingSource,
           })),
         })),
+      },
+    }
+  } else {
+    logWithTimestamp(`Failed to fetch player ${id}. Status: ${result[0].status}`)
+
+    if (result[0].status === 'rejected') {
+      const error = result[0].reason
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return { success: false, error: { status: 404, message: `Player ${id} not found` } }
+      } else {
+        return {
+          success: false,
+          error: {
+            status: error.response?.status || 500,
+            message: error.message || 'Unknown error',
+          },
+        }
       }
     } else {
-      throw new Error('Failed to fetch player data')
+      return { success: false, error: { status: 500, message: 'Unexpected error occurred' } }
     }
-  } catch (error) {
-    logWithTimestamp(`Error fetching player data: ${error}`)
-    throw error
   }
 }
 

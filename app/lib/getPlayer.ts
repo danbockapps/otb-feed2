@@ -32,7 +32,9 @@ export default async function getPlayer(id: string): Promise<PlayerResult> {
       : await Promise.allSettled([
           axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
           axios.get<PlayerSectionsResponse>(
-            `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=5`,
+            `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=${
+              process.env.NODE_ENV === 'development' ? 5 : 30
+            }`,
           ),
         ])
   ) as Result

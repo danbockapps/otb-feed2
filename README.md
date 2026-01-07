@@ -63,14 +63,13 @@ This will load sample data from `app/lib/sampleData/` instead of making API call
 
 ```
 app/
-├── api/ratings/          # Server-side API proxy (for CORS)
 ├── components/           # React components
 │   ├── AddPlayerDialog.tsx
 │   ├── EventDisplay.tsx
 │   ├── PlayerList.tsx
 │   └── Toast.tsx
 ├── lib/
-│   ├── getPlayer.ts      # Main data fetching logic
+│   ├── getPlayer.ts      # Server action for data fetching
 │   ├── manageLocalStorage.ts
 │   └── sampleData/       # Local JSON data for dev mode
 ├── types/                # TypeScript type definitions
@@ -79,12 +78,12 @@ app/
 
 ## API Usage
 
-The app fetches data from the US Chess Ratings API:
+The app fetches data from the US Chess Ratings API using Next.js server actions:
 
 - Player information: `https://ratings-api.uschess.org/api/v1/members/{id}`
 - Tournament sections: `https://ratings-api.uschess.org/api/v1/members/{id}/sections`
 
-A server-side proxy route handles CORS issues for the API calls.
+Server actions run on the server-side, avoiding CORS issues.
 
 ## Building for Production
 

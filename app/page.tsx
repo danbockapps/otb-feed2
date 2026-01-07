@@ -57,6 +57,8 @@ export default function Page() {
 
   return (
     <main className="p-6 flex flex-col items-center">
+      <h1 className="text-3xl font-bold mb-8">♘ OTB Feed ♘</h1>
+
       <PlayerList
         players={state.players}
         onRemovePlayer={(id) => {

@@ -70,6 +70,18 @@ export default async function getPlayer(id: string): Promise<PlayerResult> {
 
     if (result[0].status === 'rejected') {
       const error = result[0].reason
+
+      // Log detailed error information for debugging
+      if (axios.isAxiosError(error)) {
+        logWithTimestamp(`Axios error details:`)
+        logWithTimestamp(`  Code: ${error.code}`)
+        logWithTimestamp(`  Message: ${error.message}`)
+        logWithTimestamp(`  Response status: ${error.response?.status}`)
+        logWithTimestamp(`  Response data: ${JSON.stringify(error.response?.data)}`)
+      } else {
+        logWithTimestamp(`Non-axios error: ${error}`)
+      }
+
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         return { success: false, error: { status: 404, message: `Player ${id} not found` } }
       } else {

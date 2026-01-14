@@ -9,7 +9,14 @@ const getStoredIds = () =>
 
 export const getIds = () => {
   const storedIds = getStoredIds()
-  return storedIds.length > 0 ? storedIds : defaultPlayerIds.split(',')
+
+  // Initialize localStorage with defaults on first load
+  if (storedIds.length === 0) {
+    localStorage.setItem('playerIds', defaultPlayerIds)
+    return defaultPlayerIds.split(',')
+  }
+
+  return storedIds
 }
 
 export const addId = (id: string) => {

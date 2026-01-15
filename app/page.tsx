@@ -38,35 +38,32 @@ export default function Page() {
     console.log({ storedIds: getRawStoredIds() })
   }
 
-  const addPlayer = useCallback(
-    async (playerId: string) => {
-      try {
-        const result = await getPlayer(playerId)
+  const addPlayer = useCallback(async (playerId: string) => {
+    try {
+      const result = await getPlayer(playerId)
 
-        if (result.success) {
-          dispatch({
-            type: 'ADD_PLAYER',
-            payload: {
-              id: playerId,
-              firstName: result.data.firstName,
-              lastName: result.data.lastName,
-            },
-          })
+      if (result.success) {
+        dispatch({
+          type: 'ADD_PLAYER',
+          payload: {
+            id: playerId,
+            firstName: result.data.firstName,
+            lastName: result.data.lastName,
+          },
+        })
 
-          dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId, dto: result.data } })
-        } else {
-          console.error(
-            `Failed to add player ${playerId}: ${result.error.status} - ${result.error.message}`,
-          )
-          setToast({ show: true, message: result.error.message })
-          removeId(playerId)
-        }
-      } finally {
-        setLoadingState((prev) => ({ ...prev, completed: prev.completed + 1 }))
+        dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId, dto: result.data } })
+      } else {
+        console.error(
+          `Failed to add player ${playerId}: ${result.error.status} - ${result.error.message}`,
+        )
+        setToast({ show: true, message: result.error.message })
+        removeId(playerId)
       }
-    },
-    [setLoadingState],
-  )
+    } finally {
+      setLoadingState((prev) => ({ ...prev, completed: prev.completed + 1 }))
+    }
+  }, [])
 
   const fetchPlayerData = useCallback(() => {
     // Probably relevant in dev only

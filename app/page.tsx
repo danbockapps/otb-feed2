@@ -5,11 +5,21 @@ import AddPlayerDialog from './components/AddPlayerDialog'
 import EventDisplay from './components/EventDisplay'
 import PlayerList from './components/PlayerList'
 import Toast from './components/Toast'
-import getPlayer from './lib/getPlayer'
 import makeEvents from './lib/makeEvents'
 import { getIds, getRawStoredIds, removeId } from './lib/manageLocalStorage'
 import { initialState, reducer } from './reducer'
 import { IEvent } from './types/types'
+import { PlayerDTO } from './types/dto'
+
+type PlayerResult =
+  | { success: true; data: PlayerDTO }
+  | { success: false; error: { status: number; message: string } }
+
+async function getPlayer(id: string): Promise<PlayerResult> {
+  const response = await fetch(`/api/players/${id}`)
+  const data = await response.json()
+  return data
+}
 
 export default function Page() {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -46,7 +56,8 @@ export default function Page() {
     // Probably relevant in dev only
     dispatch({ type: 'RESET' })
 
-    getIds().forEach(addPlayer)
+    // Run all player fetches concurrently
+    Promise.all(getIds().map(addPlayer))
   }, [addPlayer])
 
   useEffect(fetchPlayerData, [fetchPlayerData])

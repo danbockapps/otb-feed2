@@ -27,37 +27,58 @@ export default function Page() {
     show: false,
     message: '',
   })
+  const [loadingState, setLoadingState] = useState<{
+    total: number
+    completed: number
+    isLoading: boolean
+  }>({ total: 0, completed: 0, isLoading: false })
 
   if (typeof window !== 'undefined') {
     console.log({ state })
     console.log({ storedIds: getRawStoredIds() })
   }
 
-  const addPlayer = useCallback(async (playerId: string) => {
-    const result = await getPlayer(playerId)
+  const addPlayer = useCallback(
+    async (playerId: string) => {
+      try {
+        const result = await getPlayer(playerId)
 
-    if (result.success) {
-      dispatch({
-        type: 'ADD_PLAYER',
-        payload: { id: playerId, firstName: result.data.firstName, lastName: result.data.lastName },
-      })
+        if (result.success) {
+          dispatch({
+            type: 'ADD_PLAYER',
+            payload: {
+              id: playerId,
+              firstName: result.data.firstName,
+              lastName: result.data.lastName,
+            },
+          })
 
-      dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId, dto: result.data } })
-    } else {
-      console.error(
-        `Failed to add player ${playerId}: ${result.error.status} - ${result.error.message}`,
-      )
-      setToast({ show: true, message: result.error.message })
-      removeId(playerId)
-    }
-  }, [])
+          dispatch({ type: 'ADD_PERFORMANCES', payload: { playerId, dto: result.data } })
+        } else {
+          console.error(
+            `Failed to add player ${playerId}: ${result.error.status} - ${result.error.message}`,
+          )
+          setToast({ show: true, message: result.error.message })
+          removeId(playerId)
+        }
+      } finally {
+        setLoadingState((prev) => ({ ...prev, completed: prev.completed + 1 }))
+      }
+    },
+    [setLoadingState],
+  )
 
   const fetchPlayerData = useCallback(() => {
     // Probably relevant in dev only
     dispatch({ type: 'RESET' })
 
+    const ids = getIds()
+    setLoadingState({ total: ids.length, completed: 0, isLoading: true })
+
     // Run all player fetches concurrently
-    Promise.all(getIds().map(addPlayer))
+    Promise.all(ids.map(addPlayer)).then(() => {
+      setLoadingState((prev) => ({ ...prev, isLoading: false }))
+    })
   }, [addPlayer])
 
   useEffect(fetchPlayerData, [fetchPlayerData])
@@ -69,6 +90,22 @@ export default function Page() {
   return (
     <main className="p-6 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-8">♘ OTB Feed ♘</h1>
+
+      <div
+        className={`w-full max-w-md mb-4 transition-opacity duration-300 ${
+          loadingState.isLoading ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        {loadingState.completed === 0 ? (
+          <progress className="progress w-full"></progress>
+        ) : (
+          <progress
+            className="progress w-full"
+            value={loadingState.completed}
+            max={loadingState.total}
+          ></progress>
+        )}
+      </div>
 
       <PlayerList
         players={state.players}

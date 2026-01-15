@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 @plugin 'daisyui' {
   themes:
-    silk --default,
-    aqua --prefersdark;
+    light --default,
+    dark --prefersdark;
 }
 
 a {

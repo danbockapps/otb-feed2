@@ -31,7 +31,7 @@ const AddPlayerDialog: FC<Props> = (props) => {
 
   return (
     <>
-      <button className="btn" onClick={() => setOpen(true)}>
+      <button className="btn btn-primary" onClick={() => setOpen(true)}>
         Add player
       </button>
       <DaisyDialog

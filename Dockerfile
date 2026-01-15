@@ -8,7 +8,8 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json yarn.lock* ./
-RUN yarn --frozen-lockfile
+# Limit network concurrency to reduce memory usage
+RUN yarn --frozen-lockfile --network-concurrency 1 && yarn cache clean
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -16,7 +17,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application
+# Build the application with limited memory (important for 2GB machines)
+# Limit Node.js to ~1.5GB, leaving room for system operations
+ENV NODE_OPTIONS="--max-old-space-size=1536"
 RUN yarn build
 
 # Production image, copy all the files and run next

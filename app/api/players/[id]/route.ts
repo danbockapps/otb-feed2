@@ -25,20 +25,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const { id } = await params
   logWithTimestamp(`Fetching player ${id}...`)
 
-  // Browser-like headers to bypass Cloudflare bot protection
-  const headers = {
-    'User-Agent':
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-    Accept: 'application/json, text/plain, */*',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Accept-Encoding': 'gzip, deflate, br',
-    Referer: 'https://www.uschess.org/',
-    Origin: 'https://www.uschess.org',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'same-site',
-  }
-
   try {
     const [playerResult, sectionsResult] =
       process.env.USE_DEV_DATA === 'true'
@@ -50,12 +36,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             },
           ]
         : await Promise.allSettled([
-            axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`, { headers }),
+            axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
             axios.get<PlayerSectionsResponse>(
               `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=${
                 process.env.NODE_ENV === 'development' ? 5 : 30
               }`,
-              { headers },
             ),
           ])
 

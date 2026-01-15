@@ -7,13 +7,11 @@ interface EventDisplayProps {
 }
 
 export default function EventDisplay({ event, performances }: EventDisplayProps) {
-  const sections = performances.reduce<PerformanceSection[]>(
-    (acc, cur) =>
-      acc.some((item) => item.sectionNumber === cur.sectionItem.sectionNumber)
-        ? acc
-        : [...acc, cur.sectionItem],
-    [],
-  )
+  const sections = performances
+    .reduce<
+      PerformanceSection[]
+    >((acc, cur) => (acc.some((item) => item.sectionNumber === cur.sectionItem.sectionNumber) ? acc : [...acc, cur.sectionItem]), [])
+    .sort((a, b) => a.sectionNumber - b.sectionNumber)
 
   return (
     <div className="card bg-base-100 shadow-lg border-l-4 border-primary">

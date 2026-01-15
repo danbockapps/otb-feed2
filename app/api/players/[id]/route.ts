@@ -21,11 +21,17 @@ function logWithTimestamp(message: string) {
 const nameCase = (name: string) => name.split(' ').map(oneNameCase).join(' ')
 const oneNameCase = (name: string) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
 
-const randomDelay = () =>
-  new Promise((resolve) => setTimeout(resolve, Math.random() * 2000))
+const randomDelay = () => new Promise((resolve) => setTimeout(resolve, Math.random() * 2000))
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+
+  const notFoundResponse = NextResponse.json(
+    { success: false, error: { status: 404, message: `Player ${id} not found` } },
+    { status: 404 },
+  )
+
+  if (id === 'e') return notFoundResponse // Quick hack to test 404 handling
   logWithTimestamp(`Fetching player ${id}...`)
 
   try {
@@ -96,10 +102,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         }
 
         if (axios.isAxiosError(error) && error.response?.status === 404) {
-          return NextResponse.json(
-            { success: false, error: { status: 404, message: `Player ${id} not found` } },
-            { status: 404 },
-          )
+          return notFoundResponse
         } else {
           return NextResponse.json(
             {

@@ -21,6 +21,9 @@ function logWithTimestamp(message: string) {
 const nameCase = (name: string) => name.split(' ').map(oneNameCase).join(' ')
 const oneNameCase = (name: string) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
 
+const randomDelay = () =>
+  new Promise((resolve) => setTimeout(resolve, Math.random() * 2000))
+
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   logWithTimestamp(`Fetching player ${id}...`)
@@ -43,6 +46,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
               }`,
             ),
           ])
+
+    if (process.env.USE_DEV_DATA === 'true') {
+      await randomDelay()
+    }
 
     if (playerResult.status === 'fulfilled' && sectionsResult.status === 'fulfilled') {
       const playerData = playerResult.value.data

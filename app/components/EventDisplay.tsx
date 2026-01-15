@@ -16,7 +16,7 @@ export default function EventDisplay({ event, performances }: EventDisplayProps)
   )
 
   return (
-    <div className="card bg-base-100 shadow-lg">
+    <div className="card bg-base-100 shadow-lg border-l-4 border-primary">
       <div className="card-title m-4 inline">
         {performances.length} players played in{' '}
         <a href={`https://ratings.uschess.org/event/${event.id}`} target="_blank">
@@ -39,7 +39,7 @@ export default function EventDisplay({ event, performances }: EventDisplayProps)
               )
 
               return (
-                <div key={i} className="border rounded-lg p-2">
+                <div key={i} className="border border-primary/20 rounded-lg p-2">
                   <h3 className="font-semibold mb-3">{section.sectionName}</h3>
                   {players.length === 0 ? (
                     <p className="text-gray-500">No players in this section.</p>
@@ -52,16 +52,28 @@ export default function EventDisplay({ event, performances }: EventDisplayProps)
                               {player.firstName} {player.lastName}
                             </td>
                             <td>
-                              {player.ratingRecords.map((record, j) => (
-                                <div key={j} className="flex gap-2 items-center">
-                                  <div>{record.preRating}</div>
-                                  <RightArrow />
-                                  <div>{record.postRating}</div>
-                                  <div>
-                                    {record.ratingSource === 'R' ? '' : record.ratingSource}
+                              {player.ratingRecords.map((record, j) => {
+                                const change = record.postRating - record.preRating
+                                const changeColor =
+                                  change > 0
+                                    ? 'text-success'
+                                    : change < 0
+                                      ? 'text-error'
+                                      : 'text-base-content'
+                                return (
+                                  <div key={j} className="flex gap-2 items-center">
+                                    <div>{record.preRating}</div>
+                                    <RightArrow />
+                                    <div className={changeColor}>{record.postRating}</div>
+                                    <div className={`${changeColor} font-semibold`}>
+                                      {change > 0 ? `+${change}` : change < 0 ? change : ''}
+                                    </div>
+                                    <div className="text-sm opacity-70">
+                                      {record.ratingSource === 'R' ? '' : record.ratingSource}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                )
+                              })}
                             </td>
                           </tr>
                         ))}

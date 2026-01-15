@@ -94,10 +94,10 @@ export default function Page() {
         }`}
       >
         {loadingState.completed === 0 ? (
-          <progress className="progress w-full"></progress>
+          <progress className="progress progress-primary w-full"></progress>
         ) : (
           <progress
-            className="progress w-full"
+            className="progress progress-primary w-full"
             value={loadingState.completed}
             max={loadingState.total}
           ></progress>

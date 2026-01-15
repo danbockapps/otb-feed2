@@ -8,8 +8,8 @@ import Toast from './components/Toast'
 import makeEvents from './lib/makeEvents'
 import { getIds, getRawStoredIds, removeId } from './lib/manageLocalStorage'
 import { initialState, reducer } from './reducer'
-import { IEvent } from './types/types'
 import { PlayerDTO } from './types/dto'
+import { IEvent } from './types/types'
 
 type PlayerResult =
   | { success: true; data: PlayerDTO }
@@ -86,7 +86,7 @@ export default function Page() {
 
   return (
     <main className="p-6 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-8">♘ OTB Feed ♘</h1>
+      <h1 className="text-3xl font-bold mb-3">♘ OTB Feed ♘</h1>
 
       <div
         className={`w-full max-w-md mb-4 transition-opacity duration-300 ${

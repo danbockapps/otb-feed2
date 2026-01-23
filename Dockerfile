@@ -11,6 +11,7 @@ COPY package.json yarn.lock* ./
 # Limit network concurrency to reduce memory usage
 RUN yarn --frozen-lockfile --network-concurrency 1 && yarn cache clean
 
+
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app

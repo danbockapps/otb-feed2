@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 import memberData from '../../../lib/sampleData/member.json'
 import sectionsData from '../../../lib/sampleData/sections.json'
@@ -22,6 +22,7 @@ const nameCase = (name: string) => name.split(' ').map(oneNameCase).join(' ')
 const oneNameCase = (name: string) => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
 
 const randomDelay = () => new Promise((resolve) => setTimeout(resolve, Math.random() * 2000))
+const config: AxiosRequestConfig = { timeout: 10000 }
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -45,11 +46,12 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
             },
           ]
         : await Promise.allSettled([
-            axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`),
+            axios.get<Player>(`https://ratings-api.uschess.org/api/v1/members/${id}`, config),
             axios.get<PlayerSectionsResponse>(
               `https://ratings-api.uschess.org/api/v1/members/${id}/sections?Offset=0&Size=${
                 process.env.NODE_ENV === 'development' ? 5 : 30
               }`,
+              config,
             ),
           ])
 

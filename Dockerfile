@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Use Node.js 20 Alpine for Next.js 16 compatibility
 FROM node:20-alpine AS base
 
@@ -8,8 +9,9 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json yarn.lock* ./
-# Limit network concurrency to reduce memory usage
-RUN yarn --frozen-lockfile --network-concurrency 1 && yarn cache clean
+# Limit network concurrency to reduce memory usage; cache yarn packages between builds
+RUN --mount=type=cache,target=/root/.cache/yarn \
+    yarn --frozen-lockfile --network-concurrency 1
 
 
 # Rebuild the source code only when needed

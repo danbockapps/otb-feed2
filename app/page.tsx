@@ -58,7 +58,6 @@ export default function Page() {
           `Failed to add player ${playerId}: ${result.error.status} - ${result.error.message}`,
         )
         setToast({ show: true, message: result.error.message })
-        removeId(playerId)
       }
     } finally {
       setLoadingState((prev) => ({ ...prev, completed: prev.completed + 1 }))
